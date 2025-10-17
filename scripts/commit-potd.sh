@@ -37,6 +37,15 @@ if echo "$OUTPUT" | grep -q "Error fetching Picture of the Day"; then
   exit 1
 fi
 
+FIRST_LINE=$(echo "$OUTPUT" | head -n 1)
+
+echo "Checking for existing commit for this date..."
+if git log --since="14 days ago" --all --format="%B" | grep -q "^${FIRST_LINE}$"; then
+  echo "Commit already exists for: $FIRST_LINE"
+  echo "Skipping commit creation (idempotent)"
+  exit 0
+fi
+
 echo "Creating commit with date: $COMMIT_DATE..."
 
 git commit --allow-empty --date="${COMMIT_DATE}T00:00:00Z" -m "$OUTPUT"

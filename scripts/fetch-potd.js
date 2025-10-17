@@ -86,9 +86,7 @@ async function fetchPictureOfTheDay() {
     const summary = unescapeHtml(summaryRaw);
     const description = extractDescription(summary);
     const imageUrl = extractImageUrl(summary);
-    const commitMessage = `${title}
-
-${description}
+    const commitMessage = `${description}
 
 Image: ${imageUrl}
 Source: ${link}`;
